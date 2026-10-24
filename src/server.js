@@ -15,7 +15,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type']
 }));
   
-const db = drizzle("postgresql://neondb_owner:npg_khmR74ObqgAD@ep-shiny-art-b53o2a0b-pooler.c-7.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require");
+const db = drizzle("postgresql://neondb_owner:npg_7EevcL0GJoDu@ep-green-shape-b4uqe0ho-pooler.c-6.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require");
 
 app.get ('/', function (req, res){
     res.json("Welcome!")
