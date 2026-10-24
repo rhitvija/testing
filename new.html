@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Add users</title>
+        <style>
+            *{
+                padding: 0px;
+                margin: 0px;
+            }
+            .container{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                border: 1px solid white;
+                border-radius: 20px;
+                margin-top: 10%;
+                width: 40%;
+                margin-left: 30%;
+                box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+                 
+            }
+            input{
+                height: 30px;
+                width: 30%;
+                margin: 10px;
+                border-radius:10px;
+                border: 1px solid gray;
+                padding-left: 10px;
+            }
+            h2{
+                padding-top: 20px;
+                padding-right: 30%;
+                padding-bottom: 20px;
+            }
+            label{
+                padding-right:27%;
+            }
+            button{
+                height: 30px;
+                width: 30%;
+                border: 1px solid rgb(81, 81, 228) ;
+                border-radius: 10px;
+                background-color: rgb(81, 81, 228);
+                color: white;
+                font-size: medium;
+                margin-bottom: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+        <h2>Add User</h2>
+
+        <label>Name</label>
+        <input type="text" id="name" placeholder="Enter your Name">
+        <br>
+        <label>Age</label>
+        <input type="text" id="age" placeholder="Enter your Age">
+        <br>
+        <label>Email</label>
+        <input type="email" id="email" placeholder="Enter your email">
+        <br>
+        <button id="submitBtn" onclick="btn()">Submit</button>
+        <p id="message" role="status"></p>
+        </div>
+        <script>
+           async function btn() {
+            const btn = document.getElementById('submitBtn');
+            const msg = document.getElementById('message');
+
+            const data ={
+                name: document.getElementById('name').value.trim(),
+                age: document.getElementById('age').value,
+                email: document.getElementById('email').value.trim(),
+            };
+
+            if(data.name==="" || data.age==="" || data.email===""){
+              msg.className = 'err';
+              msg.textContent = 'Please fill in all the details.';
+              return;
+            }
+
+            btn.disabled = true;
+            msg.className = '';
+            msg.textContent = 'Saved!';
+
+            try {
+                const res = await fetch ('http://localhost:3002/users',{
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data),
+                });
+                const result = await res.json();
+
+                if (!res.ok) throw new error (result.msg || 'Request failed');
+
+                msg.className = 'ok';
+                msg.textContent = result.msg
+                document.getElementById('name').value ='';
+                document.getElementById('age').value ='';
+                document.getElementById('email').value ='';
+            } catch (err){
+                msg.className = 'err';
+                msg.textContent = err.message;
+            } finally {
+                btn.disabled = false;
+            }
+           } 
+        </script>
+    </body>
+</html>
